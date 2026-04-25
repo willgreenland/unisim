@@ -38,14 +38,23 @@ export default function SimulationPanel({ simName }: { simName: string }) {
   }
 
   const handleReset = async () => {
-    if (!window.confirm(`Remove all output files for "${simName}"? This cannot be undone.`)) return
+    if (!window.confirm(`Clear all output and regenerate seed data for "${simName}"? This cannot be undone.`)) return
+    setRunning(true)
+    setMessage('')
     try {
-      const res = await fetch(`/api/reset/${simName}`, { method: 'POST' })
-      const data = await res.json() as { message: string }
+      await fetch(`/api/reset/${simName}`, { method: 'POST' })
+      const seedRes = await fetch(`/api/seed/${simName}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      })
+      const data = await seedRes.json() as { message: string }
       setMessage(data.message)
       loadFiles()
     } catch {
       setMessage('Error: could not connect to server.')
+    } finally {
+      setRunning(false)
     }
   }
 
@@ -70,7 +79,7 @@ export default function SimulationPanel({ simName }: { simName: string }) {
         {running ? 'Running...' : 'Run Next Term'}
       </button>
       <button onClick={handleReset} disabled={running}>
-        Reset
+        Reset &amp; Reseed
       </button>
       {message && <p>{message}</p>}
     </div>

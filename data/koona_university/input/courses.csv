@@ -1,0 +1,9 @@
+course_id,name,department_id,capacity,credits,units,max_enrollment
+CS101,Introduction to Programming,812345,30,3,100,20
+CS201,Data Structures,812345,25,3,100,20
+CS301,Algorithms,812345,20,3,100,20
+MATH101,Calculus I,834567,35,4,100,20
+MATH201,Calculus II,834567,30,4,100,20
+MATH301,Linear Algebra,834567,25,3,100,20
+PHYS101,Physics I,856789,30,4,100,20
+PHYS201,Physics II,856789,25,4,100,20

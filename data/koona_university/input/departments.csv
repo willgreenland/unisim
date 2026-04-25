@@ -1,0 +1,4 @@
+department_id,short_name,long_name,unit_code,annual_budget,annual_expenditures
+812345,CS,Department of Computer Science,COLL,0,0
+834567,MATH,Department of Mathematics,COLL,0,0
+856789,PHYS,Department of Physics,COLL,0,0

@@ -1,15 +1,15 @@
-import { Router } from 'express'
-import { runPipeline } from '../engine/pipeline.js'
+import { Router } from 'express';
+import { runPipeline } from '../engine/pipeline.js';
 
-const router = Router()
+const router = Router();
 
 router.post('/:simName', async (req, res) => {
   try {
-    await runPipeline(req.params.simName)
-    res.json({ message: 'Term simulation complete.' })
+    await runPipeline(req.params.simName);
+    res.json({ message: 'Term simulation complete.' });
   } catch (err) {
-    res.status(500).json({ message: String(err) })
+    res.status(500).json({ message: String(err) });
   }
-})
+});
 
-export default router
+export default router;

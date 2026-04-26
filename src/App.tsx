@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import SimulationPanel from './components/SimulationPanel'
+import { useState } from 'react';
+import SimulationPanel from './components/SimulationPanel';
 
 export default function App() {
-  const [inputValue, setInputValue] = useState('koona_university')
-  const [activeSim, setActiveSim] = useState('koona_university')
+  const [inputValue, setInputValue] = useState('koona_university');
+  const [activeSim, setActiveSim] = useState('koona_university');
 
   return (
     <main>
@@ -18,5 +18,5 @@ export default function App() {
       </div>
       <SimulationPanel simName={activeSim} />
     </main>
-  )
+  );
 }

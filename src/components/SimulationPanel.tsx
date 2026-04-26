@@ -81,6 +81,16 @@ export default function SimulationPanel({ simName }: { simName: string }) {
       <button onClick={handleReset} disabled={running}>
         Reset &amp; Reseed
       </button>
+      <a href={`/api/download/${simName}/all`}>
+        <button disabled={running || files.outputFiles.length === 0}>
+          Download All
+        </button>
+      </a>
+      <a href={`/api/download/${simName}/latest`}>
+        <button disabled={running || files.outputFiles.length === 0}>
+          Download Latest Term
+        </button>
+      </a>
       {message && <p>{message}</p>}
     </div>
   );

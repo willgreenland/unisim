@@ -51,12 +51,12 @@ Stages run in a fixed order because each stage may depend on outputs from the pr
 |---|-------|--------|
 | 1 | Budget setting | stub (no output) |
 | 2 | Faculty hiring | stub (reads `fixtures/faculty.csv`) |
-| 3 | Faculty assignment | stub (reads `fixtures/faculty_assignments.csv`) |
+| 3 | Faculty assignment | **active** |
 | 4 | Tuition payment | stub (no output) |
 | 5 | Course enrollment | **active** |
 | 6 | Faculty payment | stub (no output) |
 | 7 | Grading | **active** |
-| 8 | Reporting | stub (no output) |
+| 8 | Reporting | **active** |
 
 Stub stages that need to provide data to downstream stages read from `fixtures/` and write output CSVs. Stub stages with no downstream dependencies contain only a comment and return `skipped: true`.
 
@@ -86,6 +86,10 @@ fixtures/                # shared stub CSVs (faculty.csv, faculty_assignments.cs
 ### Key design constraint
 
 Output CSV schemas are the contract that analysts build reporting tools against. Column names and types should not change without a deliberate decision.
+
+## Code style
+
+Always terminate statements with semicolons.
 
 ## Roadmap
 

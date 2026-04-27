@@ -2,7 +2,6 @@ export interface SimContext {
   simName: string;
   inputDir: string;
   outputDir: string;
-  fixturesDir: string;
   termNumber: number;
   termTag: string;
   prevTermTag: string;
@@ -46,6 +45,9 @@ export interface Faculty {
   rank: FacultyRank;
   salary: string;
   active_status: ActiveStatus;
+  career_years: string;
+  years_since_hire: string;
+  years_at_rank: string;
 }
 
 export interface Department {
@@ -64,5 +66,4 @@ export interface Course {
   capacity: string;
   credits: string;
   units: string;
-  max_enrollment: string;
 }

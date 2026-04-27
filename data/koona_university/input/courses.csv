@@ -1,101 +1,101 @@
-course_id,name,department_id,capacity,credits,units,max_enrollment
-CS101,Introduction to Programming,812345,50,3,100,50
-CS102,Computer Science Fundamentals,812345,50,3,100,50
-CS103,Introduction to Web Development,812345,50,3,100,50
-CS104,Digital Logic Design,812345,50,3,100,50
-CS105,Introduction to Databases,812345,50,3,100,50
-CS106,Introduction to Computer Systems,812345,50,3,100,50
-CS107,Discrete Mathematics,812345,50,3,100,50
-CS108,Introduction to Networking,812345,50,3,100,50
-CS201,Data Structures,812345,50,3,100,50
-CS202,Object-Oriented Programming,812345,50,3,100,50
-CS203,Computer Architecture,812345,50,3,100,50
-CS204,Database Systems,812345,50,3,100,50
-CS205,Operating Systems Fundamentals,812345,50,3,100,50
-CS206,Software Engineering,812345,50,3,100,50
-CS207,Web Application Development,812345,50,3,100,50
-CS208,Algorithms I,812345,50,3,100,50
-CS209,Computer Networks,812345,50,3,100,50
-CS301,Algorithms,812345,50,3,100,50
-CS302,Operating Systems,812345,50,3,100,50
-CS303,Compiler Design,812345,50,3,100,50
-CS304,Machine Learning,812345,50,3,100,50
-CS305,Distributed Systems,812345,50,3,100,50
-CS306,Computer Graphics,812345,50,3,100,50
-CS307,Cybersecurity,812345,50,3,100,50
-CS308,Artificial Intelligence,812345,50,3,100,50
-CS309,Software Architecture,812345,50,3,100,50
-CS401,Advanced Algorithms,812345,50,3,100,50
-CS402,Deep Learning,812345,50,3,100,50
-CS403,Advanced Database Systems,812345,50,3,100,50
-CS404,Cloud Computing,812345,50,3,100,50
-CS405,Natural Language Processing,812345,50,3,100,50
-CS406,Computer Vision,812345,50,3,100,50
-CS407,Parallel Computing,812345,50,3,100,50
-CS408,Senior Capstone,812345,50,3,100,50
-MATH101,Calculus I,834567,50,4,100,50
-MATH102,Pre-Calculus,834567,50,3,100,50
-MATH103,Introduction to Statistics,834567,50,3,100,50
-MATH104,Finite Mathematics,834567,50,3,100,50
-MATH105,Introduction to Proofs,834567,50,3,100,50
-MATH106,Algebra,834567,50,3,100,50
-MATH107,Trigonometry,834567,50,3,100,50
-MATH108,Mathematical Reasoning,834567,50,3,100,50
-MATH201,Calculus II,834567,50,4,100,50
-MATH202,Multivariable Calculus,834567,50,4,100,50
-MATH203,Differential Equations,834567,50,3,100,50
-MATH204,Probability Theory,834567,50,3,100,50
-MATH205,Discrete Structures,834567,50,3,100,50
-MATH206,Number Theory,834567,50,3,100,50
-MATH207,Introduction to Analysis,834567,50,3,100,50
-MATH208,Statistics I,834567,50,3,100,50
-MATH209,Statistics II,834567,50,3,100,50
-MATH301,Linear Algebra,834567,50,3,100,50
-MATH302,Real Analysis,834567,50,3,100,50
-MATH303,Abstract Algebra,834567,50,3,100,50
-MATH304,Numerical Methods,834567,50,3,100,50
-MATH305,Complex Analysis,834567,50,3,100,50
-MATH306,Mathematical Statistics,834567,50,3,100,50
-MATH307,Topology,834567,50,3,100,50
-MATH308,Graph Theory,834567,50,3,100,50
-MATH401,Advanced Calculus,834567,50,3,100,50
-MATH402,Functional Analysis,834567,50,3,100,50
-MATH403,Partial Differential Equations,834567,50,3,100,50
-MATH404,Optimization Theory,834567,50,3,100,50
-MATH405,Stochastic Processes,834567,50,3,100,50
-MATH406,Mathematical Modeling,834567,50,3,100,50
-MATH407,Cryptography,834567,50,3,100,50
-MATH408,Senior Seminar in Mathematics,834567,50,3,100,50
-PHYS101,Physics I,856789,50,4,100,50
-PHYS102,Physics for Scientists I,856789,50,4,100,50
-PHYS103,Conceptual Physics,856789,50,3,100,50
-PHYS104,Introduction to Astronomy,856789,50,3,100,50
-PHYS105,Energy and Environment,856789,50,3,100,50
-PHYS106,Physics of Sound and Music,856789,50,3,100,50
-PHYS107,Introduction to Modern Physics,856789,50,3,100,50
-PHYS108,Physics for Life Sciences,856789,50,4,100,50
-PHYS201,Physics II,856789,50,4,100,50
-PHYS202,Physics for Scientists II,856789,50,4,100,50
-PHYS203,Mathematical Methods in Physics,856789,50,3,100,50
-PHYS204,Classical Mechanics,856789,50,3,100,50
-PHYS205,Thermodynamics,856789,50,3,100,50
-PHYS206,Electromagnetism I,856789,50,3,100,50
-PHYS207,Waves and Optics,856789,50,3,100,50
-PHYS208,Introduction to Quantum Mechanics,856789,50,3,100,50
-PHYS209,Nuclear Physics Fundamentals,856789,50,3,100,50
-PHYS301,Quantum Mechanics,856789,50,3,100,50
-PHYS302,Electromagnetism II,856789,50,3,100,50
-PHYS303,Statistical Mechanics,856789,50,3,100,50
-PHYS304,Solid State Physics,856789,50,3,100,50
-PHYS305,Particle Physics,856789,50,3,100,50
-PHYS306,Astrophysics,856789,50,3,100,50
-PHYS307,Plasma Physics,856789,50,3,100,50
-PHYS308,Computational Physics,856789,50,3,100,50
-PHYS401,Advanced Quantum Mechanics,856789,50,3,100,50
-PHYS402,General Relativity,856789,50,3,100,50
-PHYS403,Advanced Electrodynamics,856789,50,3,100,50
-PHYS404,Condensed Matter Physics,856789,50,3,100,50
-PHYS405,Cosmology,856789,50,3,100,50
-PHYS406,Nuclear and Particle Physics,856789,50,3,100,50
-PHYS407,Laser Physics,856789,50,3,100,50
-PHYS408,Senior Research in Physics,856789,50,3,100,50
+course_id,name,department_id,capacity,credits,units
+CS101,Introduction to Programming,812345,50,3,100
+CS102,Computer Science Fundamentals,812345,50,3,100
+CS103,Introduction to Web Development,812345,50,3,100
+CS104,Digital Logic Design,812345,50,3,100
+CS105,Introduction to Databases,812345,50,3,100
+CS106,Introduction to Computer Systems,812345,50,3,100
+CS107,Discrete Mathematics,812345,50,3,100
+CS108,Introduction to Networking,812345,50,3,100
+CS201,Data Structures,812345,50,3,100
+CS202,Object-Oriented Programming,812345,50,3,100
+CS203,Computer Architecture,812345,50,3,100
+CS204,Database Systems,812345,50,3,100
+CS205,Operating Systems Fundamentals,812345,50,3,100
+CS206,Software Engineering,812345,50,3,100
+CS207,Web Application Development,812345,50,3,100
+CS208,Algorithms I,812345,50,3,100
+CS209,Computer Networks,812345,50,3,100
+CS301,Algorithms,812345,50,3,100
+CS302,Operating Systems,812345,50,3,100
+CS303,Compiler Design,812345,50,3,100
+CS304,Machine Learning,812345,50,3,100
+CS305,Distributed Systems,812345,50,3,100
+CS306,Computer Graphics,812345,50,3,100
+CS307,Cybersecurity,812345,50,3,100
+CS308,Artificial Intelligence,812345,50,3,100
+CS309,Software Architecture,812345,50,3,100
+CS401,Advanced Algorithms,812345,50,3,100
+CS402,Deep Learning,812345,50,3,100
+CS403,Advanced Database Systems,812345,50,3,100
+CS404,Cloud Computing,812345,50,3,100
+CS405,Natural Language Processing,812345,50,3,100
+CS406,Computer Vision,812345,50,3,100
+CS407,Parallel Computing,812345,50,3,100
+CS408,Senior Capstone,812345,50,3,100
+MATH101,Calculus I,834567,50,4,100
+MATH102,Pre-Calculus,834567,50,3,100
+MATH103,Introduction to Statistics,834567,50,3,100
+MATH104,Finite Mathematics,834567,50,3,100
+MATH105,Introduction to Proofs,834567,50,3,100
+MATH106,Algebra,834567,50,3,100
+MATH107,Trigonometry,834567,50,3,100
+MATH108,Mathematical Reasoning,834567,50,3,100
+MATH201,Calculus II,834567,50,4,100
+MATH202,Multivariable Calculus,834567,50,4,100
+MATH203,Differential Equations,834567,50,3,100
+MATH204,Probability Theory,834567,50,3,100
+MATH205,Discrete Structures,834567,50,3,100
+MATH206,Number Theory,834567,50,3,100
+MATH207,Introduction to Analysis,834567,50,3,100
+MATH208,Statistics I,834567,50,3,100
+MATH209,Statistics II,834567,50,3,100
+MATH301,Linear Algebra,834567,50,3,100
+MATH302,Real Analysis,834567,50,3,100
+MATH303,Abstract Algebra,834567,50,3,100
+MATH304,Numerical Methods,834567,50,3,100
+MATH305,Complex Analysis,834567,50,3,100
+MATH306,Mathematical Statistics,834567,50,3,100
+MATH307,Topology,834567,50,3,100
+MATH308,Graph Theory,834567,50,3,100
+MATH401,Advanced Calculus,834567,50,3,100
+MATH402,Functional Analysis,834567,50,3,100
+MATH403,Partial Differential Equations,834567,50,3,100
+MATH404,Optimization Theory,834567,50,3,100
+MATH405,Stochastic Processes,834567,50,3,100
+MATH406,Mathematical Modeling,834567,50,3,100
+MATH407,Cryptography,834567,50,3,100
+MATH408,Senior Seminar in Mathematics,834567,50,3,100
+PHYS101,Physics I,856789,50,4,100
+PHYS102,Physics for Scientists I,856789,50,4,100
+PHYS103,Conceptual Physics,856789,50,3,100
+PHYS104,Introduction to Astronomy,856789,50,3,100
+PHYS105,Energy and Environment,856789,50,3,100
+PHYS106,Physics of Sound and Music,856789,50,3,100
+PHYS107,Introduction to Modern Physics,856789,50,3,100
+PHYS108,Physics for Life Sciences,856789,50,4,100
+PHYS201,Physics II,856789,50,4,100
+PHYS202,Physics for Scientists II,856789,50,4,100
+PHYS203,Mathematical Methods in Physics,856789,50,3,100
+PHYS204,Classical Mechanics,856789,50,3,100
+PHYS205,Thermodynamics,856789,50,3,100
+PHYS206,Electromagnetism I,856789,50,3,100
+PHYS207,Waves and Optics,856789,50,3,100
+PHYS208,Introduction to Quantum Mechanics,856789,50,3,100
+PHYS209,Nuclear Physics Fundamentals,856789,50,3,100
+PHYS301,Quantum Mechanics,856789,50,3,100
+PHYS302,Electromagnetism II,856789,50,3,100
+PHYS303,Statistical Mechanics,856789,50,3,100
+PHYS304,Solid State Physics,856789,50,3,100
+PHYS305,Particle Physics,856789,50,3,100
+PHYS306,Astrophysics,856789,50,3,100
+PHYS307,Plasma Physics,856789,50,3,100
+PHYS308,Computational Physics,856789,50,3,100
+PHYS401,Advanced Quantum Mechanics,856789,50,3,100
+PHYS402,General Relativity,856789,50,3,100
+PHYS403,Advanced Electrodynamics,856789,50,3,100
+PHYS404,Condensed Matter Physics,856789,50,3,100
+PHYS405,Cosmology,856789,50,3,100
+PHYS406,Nuclear and Particle Physics,856789,50,3,100
+PHYS407,Laser Physics,856789,50,3,100
+PHYS408,Senior Research in Physics,856789,50,3,100

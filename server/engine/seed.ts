@@ -14,6 +14,28 @@ const FACULTY_RANKS: { rank: FacultyRank; weight: number }[] = [
   { rank: 'CPRO', weight: 2 },
 ];
 
+const RANK_CAREER_RANGES: Record<FacultyRank, { careerMin: number; careerMax: number; rankCap: number }> = {
+  ASST: { careerMin: 1,  careerMax: 8,  rankCap: 5  },
+  ASSO: { careerMin: 5,  careerMax: 20, rankCap: 8  },
+  PROF: { careerMin: 10, careerMax: 35, rankCap: 15 },
+  LECT: { careerMin: 1,  careerMax: 15, rankCap: 10 },
+  INST: { careerMin: 1,  careerMax: 10, rankCap: 5  },
+  RPRO: { careerMin: 10, careerMax: 30, rankCap: 15 },
+  CPRO: { careerMin: 10, careerMax: 30, rankCap: 15 },
+};
+
+function randInt(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function generateYears(rank: FacultyRank): { career_years: number; years_since_hire: number; years_at_rank: number } {
+  const { careerMin, careerMax, rankCap } = RANK_CAREER_RANGES[rank];
+  const career_years = randInt(careerMin, careerMax);
+  const years_at_rank = randInt(1, Math.min(career_years, rankCap));
+  const years_since_hire = randInt(years_at_rank, career_years);
+  return { career_years, years_since_hire, years_at_rank };
+}
+
 function weightedRandom<T>(items: { value: T; weight: number }[]): T {
   const total = items.reduce((sum, i) => sum + i.weight, 0);
   let rand = Math.random() * total;
@@ -66,13 +88,18 @@ export async function generateSeed(
     const dept = departments[i % departments.length];
     const { id, fakename, record } = generatePerson(usedIds, 'faculty', 0);
     personRecords.push(record);
+    const rank = weightedRandom(facultyRankWeights);
+    const { career_years, years_since_hire, years_at_rank } = generateYears(rank);
     return {
       faculty_id: id,
       fakename,
       department_id: dept.department_id,
-      rank: weightedRandom(facultyRankWeights),
+      rank,
       salary: '100000',
       active_status: 'AC',
+      career_years: String(career_years),
+      years_since_hire: String(years_since_hire),
+      years_at_rank: String(years_at_rank),
     };
   });
 

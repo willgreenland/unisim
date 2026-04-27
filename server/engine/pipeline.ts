@@ -24,7 +24,6 @@ export async function runPipeline(simName: string): Promise<void> {
   const root = process.cwd();
   const inputDir = path.join(root, 'data', simName, 'input');
   const outputDir = path.join(root, 'data', simName, 'output');
-  const fixturesDir = path.join(root, 'fixtures');
 
   if (!existsSync(path.join(outputDir, 'term_000_students.csv'))) {
     throw new Error('Seed data not found. Generate a seed first via POST /api/seed/:simName.');
@@ -36,7 +35,7 @@ export async function runPipeline(simName: string): Promise<void> {
   const termTag = `term_${String(termNumber).padStart(3, '0')}`;
   const prevTermTag = `term_${String(termNumber - 1).padStart(3, '0')}`;
 
-  const ctx: SimContext = { simName, inputDir, outputDir, fixturesDir, termNumber, termTag, prevTermTag };
+  const ctx: SimContext = { simName, inputDir, outputDir, termNumber, termTag, prevTermTag };
 
   await runBudget(ctx);
   await runFacultyHiring(ctx);

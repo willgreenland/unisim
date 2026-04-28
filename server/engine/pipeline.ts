@@ -47,10 +47,6 @@ export async function runPipeline(simName: string): Promise<void> {
   const inputDir = path.join(root, 'data', simName, 'input');
   const outputDir = path.join(root, 'data', simName, 'output');
 
-  if (!existsSync(path.join(outputDir, '000000_faculty_roster.csv'))) {
-    throw new Error('Seed data not found. Generate a seed first via POST /api/seed/:simName.');
-  }
-
   mkdirSync(outputDir, { recursive: true });
 
   const { startYear, termsPerYear } = loadSettings(inputDir);

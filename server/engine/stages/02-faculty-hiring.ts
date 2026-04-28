@@ -1,4 +1,5 @@
 import path from 'path';
+import { existsSync } from 'fs';
 import { SimContext, StageResult, Faculty, FacultyRank, MAX_LOAD } from '../types.js';
 import { readCSV, writeCSV } from '../csv.js';
 import { generatePerson, loadUsedIds, savePersonRecords, PersonRecord } from '../person.js';
@@ -47,7 +48,10 @@ function resolveOutcome(
 }
 
 export async function runFacultyHiring(ctx: SimContext): Promise<StageResult> {
-  const faculty = readCSV(path.join(ctx.outputDir, `${ctx.prevTermTag}_faculty_roster.csv`)) as unknown as Faculty[];
+  const prevRosterPath = path.join(ctx.outputDir, `${ctx.prevTermTag}_faculty_roster.csv`);
+  const faculty: Faculty[] = existsSync(prevRosterPath)
+    ? readCSV(prevRosterPath) as unknown as Faculty[]
+    : [];
   const courses = readCSV(path.join(ctx.inputDir, 'courses.csv'));
 
   const year = Math.floor(ctx.termCode / 100);

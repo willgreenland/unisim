@@ -1,4 +1,5 @@
 import path from 'path';
+import { existsSync } from 'fs';
 import { SimContext, StageResult } from '../types.js';
 import { readCSV, writeCSV } from '../csv.js';
 
@@ -31,14 +32,14 @@ export async function runGrading(ctx: SimContext): Promise<StageResult> {
   const enrollmentPath = path.join(ctx.outputDir, `${ctx.termTag}_enrollment.csv`);
   const enrollments = readCSV(enrollmentPath);
 
-  const students = readCSV(path.join(ctx.outputDir, `${ctx.prevTermTag}_students.csv`));
+  const prevStudentsPath = path.join(ctx.outputDir, `${ctx.prevTermTag}_students.csv`);
+  const students = existsSync(prevStudentsPath) ? readCSV(prevStudentsPath) : [];
   const gpaMap: Record<string, number> = {};
-  // GPA is 0.0 for new students; default to 2.5 as a neutral starting mean
   for (const s of students) gpaMap[s.student_id] = parseFloat(s.gpa) || 2.5;
 
   const gradeRows = enrollments.map(e => {
     const gpa = gpaMap[e.student_id] ?? 2.5;
-    const score = randomNormal(50 + (gpa / 4) * 45, 10);
+    const score = randomNormal(64 + (gpa / 4) * 31, 10);
     const { letter, points } = scoreToGrade(score);
     return {
       student_id: e.student_id,
@@ -46,7 +47,7 @@ export async function runGrading(ctx: SimContext): Promise<StageResult> {
       score: Math.round(score),
       grade: letter,
       grade_points: points,
-      term: ctx.termNumber,
+      term: ctx.termCode,
     };
   });
 

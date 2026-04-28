@@ -1,5 +1,5 @@
 import path from 'path';
-import { readdirSync } from 'fs';
+import { existsSync, readdirSync } from 'fs';
 import { SimContext, StageResult } from '../types.js';
 import { readCSV, writeCSV } from '../csv.js';
 
@@ -13,7 +13,7 @@ export async function runReporting(ctx: SimContext): Promise<StageResult> {
 
   // Collect all grades across every term
   const allGradeFiles = readdirSync(ctx.outputDir)
-    .filter(f => /^term_\d+_grades\.csv$/.test(f))
+    .filter(f => /^\d{6}_grades\.csv$/.test(f))
     .map(f => path.join(ctx.outputDir, f));
 
   const allGradesByStudent: Record<string, { course_id: string; grade_points: number }[]> = {};
@@ -32,12 +32,18 @@ export async function runReporting(ctx: SimContext): Promise<StageResult> {
     }
   }
 
-  const prevStudents = readCSV(path.join(ctx.outputDir, `${ctx.prevTermTag}_students.csv`));
+  const prevStudentsPath = path.join(ctx.outputDir, `${ctx.prevTermTag}_students.csv`);
+  const existingStudents = existsSync(prevStudentsPath) ? readCSV(prevStudentsPath) : [];
+
+  const intakePath = path.join(ctx.outputDir, `${ctx.termTag}_new_students.csv`);
+  const newStudents = existsSync(intakePath) ? readCSV(intakePath) : [];
+
+  const allStudents = [...existingStudents, ...newStudents];
 
   const graduates: Record<string, string | number>[] = [];
   const continuingStudents: Record<string, string | number>[] = [];
 
-  for (const s of prevStudents) {
+  for (const s of allStudents) {
     const allGrades = allGradesByStudent[s.student_id] ?? [];
     const passedCourses = passedCoursesByStudent[s.student_id] ?? new Set<string>();
 
@@ -57,13 +63,13 @@ export async function runReporting(ctx: SimContext): Promise<StageResult> {
     const courseCount = passedCourses.size;
 
     if (courseCount >= COURSES_TO_GRADUATE) {
-      graduates.push({ student_id: s.student_id, gpa, term: ctx.termNumber });
+      graduates.push({ student_id: s.student_id, gpa, term: ctx.termCode });
     } else {
       continuingStudents.push({
         ...s,
         gpa,
         course_count: String(courseCount),
-        year: String(parseInt(s.year, 10) + 1),
+        year: String(parseInt(s.year, 10) + (ctx.isLastTermOfYear ? 1 : 0)),
       });
     }
   }

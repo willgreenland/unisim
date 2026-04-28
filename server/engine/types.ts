@@ -1,10 +1,18 @@
+export interface UniversitySettings {
+  startYear: number;
+  termsPerYear: number;
+}
+
 export interface SimContext {
   simName: string;
   inputDir: string;
   outputDir: string;
-  termNumber: number;
-  termTag: string;
-  prevTermTag: string;
+  termCode: number;      // YYYYTT, e.g. 202001
+  termTag: string;       // '202001'
+  prevTermTag: string;   // '202003' or '000000' for first term
+  termsPerYear: number;  // from settings.json
+  isFirstTermOfYear: boolean;
+  isLastTermOfYear: boolean;
 }
 
 export interface StageResult {
@@ -16,6 +24,12 @@ export interface StageResult {
 export type ActiveStatus = 'AC' | 'OL' | 'SA';
 
 export type FacultyRank = 'PROF' | 'ASSO' | 'ASST' | 'LECT' | 'INST' | 'RPRO' | 'CPRO';
+
+export const MAX_LOAD: Record<FacultyRank, number> = {
+  PROF: 2, ASSO: 2, ASST: 2,
+  LECT: 3, INST: 3,
+  RPRO: 1, CPRO: 1,
+};
 
 export interface Student {
   student_id: string;

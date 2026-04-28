@@ -40,7 +40,7 @@ export async function runFacultyAssignment(ctx: SimContext): Promise<StageResult
       const available = loadPool.filter(fp => fp.remaining > 0);
       if (available.length === 0) break;
       const pick = available[Math.floor(Math.random() * available.length)];
-      assignments.push({ faculty_id: pick.faculty_id, course_id: courseId, term: ctx.termNumber });
+      assignments.push({ faculty_id: pick.faculty_id, course_id: courseId, term: ctx.termCode });
       pick.remaining--;
     }
   }

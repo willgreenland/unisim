@@ -57,13 +57,13 @@ function generateFakename(): string {
 export function generatePerson(
   usedIds: Set<string>,
   type: 'student' | 'faculty',
-  termNumber: number
+  termCode: number
 ): { id: string; fakename: string; record: PersonRecord } {
   const id = generateId(usedIds);
   usedIds.add(id);
   return {
     id,
     fakename: generateFakename(),
-    record: { person_id: id, type, term_created: termNumber },
+    record: { person_id: id, type, term_created: termCode },
   };
 }

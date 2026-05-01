@@ -8,6 +8,15 @@ const COURSES_PER_STUDENT = 4;
 const PASS_THRESHOLD = 1.7;
 const NEW_STUDENTS_MIN = 235;
 const NEW_STUDENTS_MAX = 265;
+const MAJOR_WEIGHT = 3;    // courses in student's major department get 3× sampling weight
+const LEVEL_TARGET = 0.20; // target ≥20% of passed courses at each level
+
+// Minimum passed courses at level N-1 required to enroll in level-N courses
+const LEVEL_PREREQS: Record<number, number> = {
+  2: 4,
+  3: 6,
+  4: 6,
+};
 
 function weightedRandom<T>(items: { value: T; weight: number }[]): T {
   const total = items.reduce((sum, i) => sum + i.weight, 0);
@@ -19,14 +28,69 @@ function weightedRandom<T>(items: { value: T; weight: number }[]): T {
   return items[items.length - 1].value;
 }
 
+function getCourseLevel(courseId: string): number {
+  const m = courseId.match(/(\d+)/);
+  return m ? Math.floor(parseInt(m[1], 10) / 100) : 1;
+}
+
+function getUnlockedLevels(passedByLevel: Record<number, number>): Set<number> {
+  const unlocked = new Set<number>([1]);
+  for (let lv = 2; lv <= 4; lv++) {
+    if ((passedByLevel[lv - 1] ?? 0) >= LEVEL_PREREQS[lv]) {
+      unlocked.add(lv);
+    }
+  }
+  return unlocked;
+}
+
+function selectCourses(
+  courses: Course[],
+  passed: Set<string>,
+  passedByLevel: Record<number, number>,
+  majorDeptId: string | undefined,
+  capacityMap: Record<string, number>,
+  count: number,
+): Course[] {
+  const unlockedLevels = getUnlockedLevels(passedByLevel);
+  const totalPassed = Object.values(passedByLevel).reduce((s, n) => s + n, 0);
+
+  let pool = courses.filter(c =>
+    !passed.has(c.course_id) &&
+    capacityMap[c.course_id] > 0 &&
+    unlockedLevels.has(getCourseLevel(c.course_id))
+  );
+
+  const selected: Course[] = [];
+
+  for (let i = 0; i < count && pool.length > 0; i++) {
+    const weighted = pool.map(c => {
+      const level = getCourseLevel(c.course_id);
+      const levelShare = (passedByLevel[level] ?? 0) / Math.max(1, totalPassed);
+      const levelWeight = levelShare < LEVEL_TARGET ? 2.5 : 1;
+      const majorMult = c.department_id === majorDeptId ? MAJOR_WEIGHT : 1;
+      return { value: c, weight: levelWeight * majorMult };
+    });
+
+    const pick = weightedRandom(weighted);
+    selected.push(pick);
+    pool = pool.filter(c => c !== pick);
+    capacityMap[pick.course_id]--;
+  }
+
+  return selected;
+}
+
 export async function runEnrollment(ctx: SimContext): Promise<StageResult> {
   const courses = readCSV(path.join(ctx.inputDir, 'courses.csv')) as unknown as Course[];
+  const majors = readCSV(path.join(ctx.inputDir, 'majors.csv')) as unknown as Major[];
+  const majorDeptMap: Record<string, string> = {};
+  for (const m of majors) majorDeptMap[m.major_code] = m.department_id;
+
   const outputFiles: string[] = [];
 
   // Admit a new cohort at the start of each academic year
   const newStudents: Student[] = [];
   if (ctx.isFirstTermOfYear) {
-    const majors = readCSV(path.join(ctx.inputDir, 'majors.csv')) as unknown as Major[];
     const majorWeights = majors.map(m => ({ value: m.major_code, weight: parseInt(m.weight, 10) }));
     const count = Math.floor(Math.random() * (NEW_STUDENTS_MAX - NEW_STUDENTS_MIN + 1)) + NEW_STUDENTS_MIN;
     const usedIds = loadUsedIds(ctx.outputDir);
@@ -64,13 +128,17 @@ export async function runEnrollment(ctx: SimContext): Promise<StageResult> {
 
   const students = [...prevStudents, ...newStudents];
 
-  // Build passed-course set per student from all previous terms
+  // Build passed-course sets and per-level counts per student from all previous terms
   const passedByStudent: Record<string, Set<string>> = {};
+  const passedByStudentLevel: Record<string, Record<number, number>> = {};
   for (const gf of readdirSync(ctx.outputDir).filter(f => /^\d{6}_grades\.csv$/.test(f))) {
     for (const row of readCSV(path.join(ctx.outputDir, gf))) {
       if (parseFloat(row.grade_points) >= PASS_THRESHOLD) {
         if (!passedByStudent[row.student_id]) passedByStudent[row.student_id] = new Set();
         passedByStudent[row.student_id].add(row.course_id);
+        if (!passedByStudentLevel[row.student_id]) passedByStudentLevel[row.student_id] = {};
+        const lv = getCourseLevel(row.course_id);
+        passedByStudentLevel[row.student_id][lv] = (passedByStudentLevel[row.student_id][lv] ?? 0) + 1;
       }
     }
   }
@@ -84,16 +152,15 @@ export async function runEnrollment(ctx: SimContext): Promise<StageResult> {
   const rosterRows: Record<string, string | number>[] = [];
 
   for (const student of students) {
-    const passed = passedByStudent[student.student_id] ?? new Set();
-    const available = courses.filter(c => capacityMap[c.course_id] > 0 && !passed.has(c.course_id));
-    const selected = [...available]
-      .sort(() => Math.random() - 0.5)
-      .slice(0, Math.min(COURSES_PER_STUDENT, available.length));
+    const passed = passedByStudent[student.student_id] ?? new Set<string>();
+    const passedByLevel = passedByStudentLevel[student.student_id] ?? {};
+    const majorDeptId = majorDeptMap[student.specialization_1];
+
+    const selected = selectCourses(courses, passed, passedByLevel, majorDeptId, capacityMap, COURSES_PER_STUDENT);
 
     for (const course of selected) {
       enrollmentRows.push({ student_id: student.student_id, course_id: course.course_id, term: ctx.termCode });
       rosterRows.push({ course_id: course.course_id, student_id: student.student_id, term: ctx.termCode });
-      capacityMap[course.course_id]--;
     }
   }
 

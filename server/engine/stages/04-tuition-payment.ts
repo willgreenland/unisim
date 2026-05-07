@@ -3,15 +3,15 @@ import { existsSync } from 'fs';
 import { SimContext, StageResult } from '../types.js';
 import { readCSV, writeCSV } from '../csv.js';
 
-function getTotalSalaries(ctx: SimContext): number {
+function getTotalBudget(ctx: SimContext): number {
   const budgetPath = path.join(ctx.outputDir, `${ctx.termTag}_budget.csv`);
   if (existsSync(budgetPath)) {
-    const total = readCSV(budgetPath).reduce((sum, row) => sum + parseInt(row.faculty_salary_total, 10), 0);
+    const total = readCSV(budgetPath).reduce((sum, row) => sum + parseInt(row.total_budget, 10), 0);
     if (total > 0) return total;
   }
   const rosterPath = path.join(ctx.outputDir, `${ctx.termTag}_employee_roster.csv`);
   if (!existsSync(rosterPath)) {
-    throw new Error(`No salary data for term ${ctx.termTag}: budget is zero and employee roster is missing`);
+    throw new Error(`No budget data for term ${ctx.termTag}: budget is missing and employee roster is unavailable`);
   }
   return readCSV(rosterPath)
     .filter(f => f.active_status === 'AC')
@@ -47,6 +47,28 @@ function adjustRates(
   }));
 }
 
+function prevTermTag(tag: string, termsPerYear: number): string {
+  const code = parseInt(tag, 10);
+  const year = Math.floor(code / 100);
+  const term = code % 100;
+  return term > 1 ? String(year * 100 + term - 1) : String((year - 1) * 100 + termsPerYear);
+}
+
+function averageRecentEnrollment(ctx: SimContext, terms: number): number {
+  let tag = ctx.prevTermTag;
+  let total = 0;
+  let n = 0;
+  for (let i = 0; i < terms; i++) {
+    if (tag === '000000') break;
+    const filePath = path.join(ctx.outputDir, `${tag}_students.csv`);
+    if (!existsSync(filePath)) break;
+    total += readCSV(filePath).filter(s => s.active_status === 'AC').length;
+    n++;
+    tag = prevTermTag(tag, ctx.termsPerYear);
+  }
+  return n > 0 ? Math.round(total / n) : 0;
+}
+
 function carryForwardRates(programs: string[], prevProgramsPath: string): Record<string, number> {
   const prevPrograms = existsSync(prevProgramsPath) ? readCSV(prevProgramsPath) : [];
   return Object.fromEntries(prevPrograms.map(p => [p.degree_program, parseInt(p.tuition_per_term, 10)]));
@@ -70,21 +92,20 @@ export async function runTuitionPayment(ctx: SimContext): Promise<StageResult> {
   if (!ctx.isFirstTermOfYear) {
     rateByProgram = carryForwardRates(programs, prevProgramsPath);
   } else if (ctx.prevTermTag === '000000') {
-    const totalSalaries = getTotalSalaries(ctx);
-    rateByProgram = computeInitialRates(programs, totalSalaries * 2, ctx.targetEnrollment, ctx.termsPerYear);
+    rateByProgram = computeInitialRates(programs, getTotalBudget(ctx), ctx.targetEnrollment, ctx.termsPerYear);
   } else if (isFixedPeriod) {
     const prevRates = carryForwardRates(programs, prevProgramsPath);
     const needsInit = programs.length > 0 && programs.every(p => (prevRates[p] ?? 0) === 0);
     if (needsInit) {
-      const totalSalaries = getTotalSalaries(ctx);
-      rateByProgram = computeInitialRates(programs, totalSalaries * 2, ctx.targetEnrollment, ctx.termsPerYear);
+      rateByProgram = computeInitialRates(programs, getTotalBudget(ctx), ctx.targetEnrollment, ctx.termsPerYear);
     } else {
       rateByProgram = prevRates;
     }
   } else {
-    const totalSalaries = getTotalSalaries(ctx);
+    const totalBudget = getTotalBudget(ctx);
     const prevRates = carryForwardRates(programs, prevProgramsPath);
-    rateByProgram = adjustRates(programs, totalSalaries * 2, activeStudents.length, ctx.termsPerYear, prevRates);
+    const enrollment = averageRecentEnrollment(ctx, 3);
+    rateByProgram = adjustRates(programs, totalBudget, enrollment, ctx.termsPerYear, prevRates);
   }
 
   const programsPath = path.join(ctx.outputDir, `${ctx.termTag}_programs.csv`);

@@ -8,7 +8,7 @@ import { runEmployeeHiring } from './stages/02-employee-hiring.js';
 import { runFacultyAssignment } from './stages/03-faculty-assignment.js';
 import { runTuitionPayment } from './stages/04-tuition-payment.js';
 import { runEnrollment } from './stages/05-enrollment.js';
-import { runFacultyPayment } from './stages/06-faculty-payment.js';
+import { runExpenditures } from './stages/06-expenditures.js';
 import { runGrading } from './stages/07-grading.js';
 import { runReporting } from './stages/08-reporting.js';
 
@@ -82,7 +82,7 @@ export async function runPipeline(simName: string): Promise<void> {
   await runFacultyAssignment(ctx);
   await runTuitionPayment(ctx);
   await runEnrollment(ctx);
-  await runFacultyPayment(ctx);
+  await runExpenditures(ctx);
   await runGrading(ctx);
   await runReporting(ctx);
 

@@ -54,7 +54,7 @@ Stages run in a fixed order because each stage may depend on outputs from the pr
 | 3 | Faculty assignment | **active** |
 | 4 | Tuition payment | stub (no output) |
 | 5 | Course enrollment | **active** |
-| 6 | Faculty payment | stub (no output) |
+| 6 | Expenditures | **active** |
 | 7 | Grading | **active** |
 | 8 | Reporting | **active** |
 

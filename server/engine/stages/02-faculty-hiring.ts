@@ -47,12 +47,34 @@ function resolveOutcome(
     : { keep: false };
 }
 
+function computeHireSalary(
+  rank: FacultyRank,
+  deptId: string,
+  rankSalaries: Record<string, number>,
+  deptFactors: Record<string, number>,
+): number {
+  const base = rankSalaries[rank] ?? 90000;
+  const factor = deptFactors[deptId] ?? 1;
+  const random = 0.9 + Math.random() * 0.2;
+  return Math.round(base * factor * random);
+}
+
 export async function runFacultyHiring(ctx: SimContext): Promise<StageResult> {
   const prevRosterPath = path.join(ctx.outputDir, `${ctx.prevTermTag}_faculty_roster.csv`);
   const faculty: Faculty[] = existsSync(prevRosterPath)
     ? readCSV(prevRosterPath) as unknown as Faculty[]
     : [];
   const courses = readCSV(path.join(ctx.inputDir, 'courses.csv'));
+
+  const rankSalaries: Record<string, number> = {};
+  for (const row of readCSV(path.join(ctx.inputDir, 'rank_salaries.csv'))) {
+    rankSalaries[row.rank] = parseInt(row.base_salary, 10);
+  }
+
+  const deptFactors: Record<string, number> = {};
+  for (const row of readCSV(path.join(ctx.inputDir, 'department_salary_factors.csv'))) {
+    deptFactors[row.department_id] = parseFloat(row.salary_factor);
+  }
 
   const year = Math.floor(ctx.termCode / 100);
   const term = ctx.termCode % 100;
@@ -107,7 +129,7 @@ export async function runFacultyHiring(ctx: SimContext): Promise<StageResult> {
         fakename,
         department_id: deptId,
         rank,
-        salary: '100000',
+        salary: String(computeHireSalary(rank, deptId, rankSalaries, deptFactors)),
         active_status: 'AC',
         career_years: '1',
         years_since_hire: '1',

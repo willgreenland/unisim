@@ -45,5 +45,5 @@ export function writeCSV(filePath: string, rows: Record<string, string | number>
     headers.join(','),
     ...rows.map(row => headers.map(h => formatValue(String(row[h] ?? ''))).join(',')),
   ];
-  writeFileSync(filePath, lines.join('\n'));
+  writeFileSync(filePath, lines.join('\n') + '\n');
 }

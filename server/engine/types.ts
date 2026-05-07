@@ -1,6 +1,12 @@
+export interface ITransactionLog {
+  create(date: string, amount: number, account: number, expenseType: string): string;
+}
+
 export interface UniversitySettings {
   startYear: number;
   termsPerYear: number;
+  termStartMonths: number[];
+  targetEnrollment: number;
 }
 
 export interface SimContext {
@@ -11,8 +17,12 @@ export interface SimContext {
   termTag: string;       // '202001'
   prevTermTag: string;   // '202003' or '000000' for first term
   termsPerYear: number;  // from settings.json
+  startYear: number;
   isFirstTermOfYear: boolean;
   isLastTermOfYear: boolean;
+  termDate: string;
+  targetEnrollment: number;
+  transactions: ITransactionLog;
 }
 
 export interface StageResult {

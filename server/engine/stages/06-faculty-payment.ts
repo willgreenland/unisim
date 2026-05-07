@@ -6,7 +6,6 @@ export async function runFacultyPayment(ctx: SimContext): Promise<StageResult> {
   const roster = readCSV(path.join(ctx.outputDir, `${ctx.termTag}_faculty_roster.csv`));
   const active = roster.filter(f => f.active_status === 'AC');
 
-  const termWithinYear = ctx.termCode % 100;
   const regularPayment = (salary: number) => Math.floor(salary / ctx.termsPerYear);
 
   const paymentRows = active.map(f => {
@@ -14,13 +13,8 @@ export async function runFacultyPayment(ctx: SimContext): Promise<StageResult> {
     const payment = ctx.isLastTermOfYear
       ? salary - (ctx.termsPerYear - 1) * regularPayment(salary)
       : regularPayment(salary);
-    return {
-      faculty_id: f.faculty_id,
-      department_id: f.department_id,
-      term: ctx.termCode,
-      salary,
-      payment,
-    };
+    const payment_reference = ctx.transactions.create(ctx.termDate, -payment, 10000, 'SAL');
+    return { faculty_id: f.faculty_id, department_id: f.department_id, term: ctx.termCode, salary, payment, payment_reference };
   });
 
   const paymentsPath = path.join(ctx.outputDir, `${ctx.termTag}_faculty_payments.csv`);

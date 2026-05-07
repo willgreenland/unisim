@@ -1,4 +1,6 @@
 {
   "startYear": 2020,
-  "termsPerYear": 3
+  "termsPerYear": 3,
+  "termStartMonths": [1, 5, 9],
+  "targetEnrollment": 4000
 }

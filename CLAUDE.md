@@ -50,7 +50,7 @@ Stages run in a fixed order because each stage may depend on outputs from the pr
 | # | Stage | Status |
 |---|-------|--------|
 | 1 | Budget setting | stub (no output) |
-| 2 | Faculty hiring | stub (reads `fixtures/faculty.csv`) |
+| 2 | Employee hiring | **active** |
 | 3 | Faculty assignment | **active** |
 | 4 | Tuition payment | stub (no output) |
 | 5 | Course enrollment | **active** |
@@ -65,7 +65,7 @@ Stub stages that need to provide data to downstream stages read from `fixtures/`
 Each term run writes files named `term_NNN_<type>.csv` into `data/{simName}/output/`:
 - `term_NNN_enrollment.csv` — one row per student-course pair
 - `term_NNN_course_roster.csv` — same data, keyed by course
-- `term_NNN_faculty_roster.csv` — faculty list for this term (from fixture)
+- `term_NNN_employee_roster.csv` — employee (faculty) list for this term
 - `term_NNN_faculty_assignment.csv` — faculty-course assignments (from fixture)
 - `term_NNN_grades.csv` — grade, score, and grade_points per student-course pair
 
@@ -99,4 +99,4 @@ See `ROADMAP.md` for the full development plan. In brief:
 - **Phase 2** — Reporting stage (active)
 - **Phase 3** — Multi-term chaining (GPA carry-over, course history, graduation)
 - **Phase 4** — Faculty assignment (active)
-- **Phase 5** — Faculty hiring (active)
+- **Phase 5** — Employee hiring (active)

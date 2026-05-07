@@ -1,15 +1,9 @@
 import path from 'path';
-import { SimContext, StageResult, FacultyRank } from '../types.js';
+import { SimContext, StageResult, FacultyRank, MAX_LOAD } from '../types.js';
 import { readCSV, writeCSV } from '../csv.js';
 
-const MAX_LOAD: Record<FacultyRank, number> = {
-  PROF: 2, ASSO: 2, ASST: 2,
-  LECT: 3, INST: 3,
-  RPRO: 1, CPRO: 1,
-};
-
 export async function runFacultyAssignment(ctx: SimContext): Promise<StageResult> {
-  const faculty = readCSV(path.join(ctx.outputDir, `${ctx.termTag}_faculty_roster.csv`));
+  const faculty = readCSV(path.join(ctx.outputDir, `${ctx.termTag}_employee_roster.csv`));
   const courses = readCSV(path.join(ctx.inputDir, 'courses.csv'));
 
   const coursesByDept: Record<string, string[]> = {};
@@ -21,6 +15,7 @@ export async function runFacultyAssignment(ctx: SimContext): Promise<StageResult
   const facultyByDept: Record<string, typeof faculty> = {};
   for (const f of faculty) {
     if (f.active_status !== 'AC') continue;
+    if ((MAX_LOAD[f.rank as FacultyRank] ?? 0) === 0) continue;
     if (!facultyByDept[f.department_id]) facultyByDept[f.department_id] = [];
     facultyByDept[f.department_id].push(f);
   }

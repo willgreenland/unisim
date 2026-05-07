@@ -3,7 +3,7 @@ import { SimContext, StageResult } from '../types.js';
 import { readCSV, writeCSV } from '../csv.js';
 
 export async function runFacultyPayment(ctx: SimContext): Promise<StageResult> {
-  const roster = readCSV(path.join(ctx.outputDir, `${ctx.termTag}_faculty_roster.csv`));
+  const roster = readCSV(path.join(ctx.outputDir, `${ctx.termTag}_employee_roster.csv`));
   const active = roster.filter(f => f.active_status === 'AC');
 
   const regularPayment = (salary: number) => Math.floor(salary / ctx.termsPerYear);

@@ -34,7 +34,7 @@ Each term produces a set of `term_NNN_*.csv` files in `data/{simName}/output/`:
 | `term_NNN_students.csv` | Active student roster with cumulative GPA and course count |
 | `term_NNN_enrollment.csv` | One row per student–course pair |
 | `term_NNN_course_roster.csv` | Same enrollment data keyed by course |
-| `term_NNN_faculty_roster.csv` | Faculty list for the term |
+| `term_NNN_employee_roster.csv` | Employee (faculty) list for the term |
 | `term_NNN_faculty_assignment.csv` | Faculty–course teaching assignments |
 | `term_NNN_grades.csv` | Score, letter grade, and grade points per enrollment |
 | `term_NNN_degrees_awarded.csv` | Students who graduated this term (only present if ≥ 1 graduate) |

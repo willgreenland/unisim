@@ -9,9 +9,9 @@ function getTotalSalaries(ctx: SimContext): number {
     const total = readCSV(budgetPath).reduce((sum, row) => sum + parseInt(row.faculty_salary_total, 10), 0);
     if (total > 0) return total;
   }
-  const rosterPath = path.join(ctx.outputDir, `${ctx.termTag}_faculty_roster.csv`);
+  const rosterPath = path.join(ctx.outputDir, `${ctx.termTag}_employee_roster.csv`);
   if (!existsSync(rosterPath)) {
-    throw new Error(`No salary data for term ${ctx.termTag}: budget is zero and faculty roster is missing`);
+    throw new Error(`No salary data for term ${ctx.termTag}: budget is zero and employee roster is missing`);
   }
   return readCSV(rosterPath)
     .filter(f => f.active_status === 'AC')

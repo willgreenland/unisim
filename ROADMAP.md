@@ -30,14 +30,14 @@ Development roadmap for UniSim. Phases are ordered by dependency — Phase 1 mus
 - Maximum course load per term by rank: PROF/ASSO/ASST = 2, LECT/INST = 3, RPRO/CPRO = 1. Courses exceeding the department's total load capacity go unassigned.
 - Writes `{termTag}_faculty_assignment.csv`.
 
-## Phase 5 — Faculty hiring ✓
+## Phase 5 — Employee hiring ✓
 *Third stub to implement; depends on Phase 1*
 
-- Stage 2 reads the previous term's faculty roster and ages all faculty: `career_years`, `years_since_hire`, and `years_at_rank` each increment by 1 on `isLastTermOfYear`.
+- Stage 2 reads the previous term's employee roster and ages all faculty: `career_years`, `years_since_hire`, and `years_at_rank` each increment by 1 on `isLastTermOfYear`.
 - Attrition uses a career-years-based departure probability: flat 2% below 25 years, rising linearly to 99% at 45 years. Departures are recorded as `DEP` events.
 - Promotions are evaluated only at end of year: ASST at exactly 7 career years has a 65% chance of promotion to ASSO and 5% chance to PROF (otherwise departs); INST at exactly 4 years has a 10% chance of conversion to ASST (otherwise departs); ASSO between 12–18 years has a 10% chance per year of promotion to PROF. Promotions reset `years_at_rank` to 0 and are recorded as `PROM` events.
 - After attrition, the stage calculates teaching capacity per department (sum of MAX_LOAD for all continuing active faculty) and hires until the deficit against the course count is covered. New hire ranks are drawn randomly: 10% INST, 20% LECT, 30% ASST, 40% split equally among PROF/ASSO/RPRO/CPRO. All new hires are assigned a flat `salary = 100000` regardless of rank.
-- Writes `{termTag}_faculty_roster.csv` and `{termTag}_faculty_events.csv`.
+- Writes `{termTag}_employee_roster.csv` and `{termTag}_employee_events.csv`.
 
 ---
 
@@ -53,8 +53,11 @@ New students enter with zero passed courses and only level-1 unlocked, so their 
 
 ---
 
-## Stub stages — not yet implemented
+## Phase 6 — Non-faculty expenditures
+*Depends on Phases 1 and 5*
 
-- **Stage 1 — Budget**: skipped each term, no output.
-- **Stage 4 — Tuition payment**: skipped each term, no output.
-- **Stage 6 — Faculty payment**: skipped each term, no output.
+The university incurs costs beyond faculty salaries — facilities, administration, IT, student services, etc. These should be simulated and recorded as transactions so that the financial picture is complete and analysts can model total cost against tuition revenue.
+
+- A non-faculty expenditure amount is calculated each term and written to `{termTag}_nonfaculty_expenditures.csv` with at minimum a total and a per-department breakdown.
+- Expenditures are recorded as outflow transactions (negative amounts) with an appropriate expense type code.
+- The budget stage (stage 1) should incorporate non-faculty expenditure projections alongside faculty salary totals so that the tuition rate calculation targets full cost coverage, not just salary cost times a fixed multiplier.

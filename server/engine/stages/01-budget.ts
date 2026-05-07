@@ -19,7 +19,7 @@ export async function runBudget(ctx: SimContext): Promise<StageResult> {
 
   const departments = readCSV(path.join(ctx.inputDir, 'departments.csv'));
 
-  const prevRosterPath = path.join(ctx.outputDir, `${ctx.prevTermTag}_faculty_roster.csv`);
+  const prevRosterPath = path.join(ctx.outputDir, `${ctx.prevTermTag}_employee_roster.csv`);
   const salaryTotals = existsSync(prevRosterPath)
     ? calcDeptSalaryTotals(prevRosterPath)
     : {};

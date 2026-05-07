@@ -2,8 +2,9 @@ import { mkdirSync, readdirSync, existsSync, readFileSync } from 'fs';
 import path from 'path';
 import { SimContext, UniversitySettings } from './types.js';
 import { TransactionLog } from './financials.js';
+import { runExternalGeneration } from './external.js';
 import { runBudget } from './stages/01-budget.js';
-import { runFacultyHiring } from './stages/02-faculty-hiring.js';
+import { runEmployeeHiring } from './stages/02-employee-hiring.js';
 import { runFacultyAssignment } from './stages/03-faculty-assignment.js';
 import { runTuitionPayment } from './stages/04-tuition-payment.js';
 import { runEnrollment } from './stages/05-enrollment.js';
@@ -47,8 +48,10 @@ export async function runPipeline(simName: string): Promise<void> {
   const root = process.cwd();
   const inputDir = path.join(root, 'data', simName, 'input');
   const outputDir = path.join(root, 'data', simName, 'output');
+  const externalDir = path.join(root, 'data', simName, 'external');
 
   mkdirSync(outputDir, { recursive: true });
+  mkdirSync(externalDir, { recursive: true });
 
   const { startYear, termsPerYear, termStartMonths, targetEnrollment } = loadSettings(inputDir);
   const { termCode, prevTermTag } = nextTermCode(outputDir, startYear, termsPerYear);
@@ -63,7 +66,7 @@ export async function runPipeline(simName: string): Promise<void> {
   const transactions = new TransactionLog(prevTransactionsPath);
 
   const ctx: SimContext = {
-    simName, inputDir, outputDir, termCode, termTag, prevTermTag,
+    simName, inputDir, outputDir, externalDir, termCode, termTag, prevTermTag,
     termsPerYear,
     startYear,
     targetEnrollment,
@@ -73,8 +76,9 @@ export async function runPipeline(simName: string): Promise<void> {
     transactions,
   };
 
+  runExternalGeneration(ctx);
   await runBudget(ctx);
-  await runFacultyHiring(ctx);
+  await runEmployeeHiring(ctx);
   await runFacultyAssignment(ctx);
   await runTuitionPayment(ctx);
   await runEnrollment(ctx);

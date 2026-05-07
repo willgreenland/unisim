@@ -13,6 +13,7 @@ export interface SimContext {
   simName: string;
   inputDir: string;
   outputDir: string;
+  externalDir: string;
   termCode: number;      // YYYYTT, e.g. 202001
   termTag: string;       // '202001'
   prevTermTag: string;   // '202003' or '000000' for first term
@@ -33,12 +34,13 @@ export interface StageResult {
 
 export type ActiveStatus = 'AC' | 'OL' | 'SA';
 
-export type FacultyRank = 'PROF' | 'ASSO' | 'ASST' | 'LECT' | 'INST' | 'RPRO' | 'CPRO';
+export type FacultyRank = 'PROF' | 'ASSO' | 'ASST' | 'LECT' | 'INST' | 'RPRO' | 'CPRO' | 'AD01' | 'AD02' | 'AD03';
 
 export const MAX_LOAD: Record<FacultyRank, number> = {
   PROF: 2, ASSO: 2, ASST: 2,
   LECT: 3, INST: 3,
   RPRO: 1, CPRO: 1,
+  AD01: 0, AD02: 0, AD03: 0,
 };
 
 export interface Student {

@@ -17,7 +17,7 @@ export async function runFacultyPayment(ctx: SimContext): Promise<StageResult> {
     return { faculty_id: f.faculty_id, department_id: f.department_id, term: ctx.termCode, salary, payment, payment_reference };
   });
 
-  const paymentsPath = path.join(ctx.outputDir, `${ctx.termTag}_faculty_payments.csv`);
+  const paymentsPath = path.join(ctx.outputDir, `${ctx.termTag}_employee_payments.csv`);
   writeCSV(paymentsPath, paymentRows);
 
   return { stage: 'faculty-payment', skipped: false, outputFiles: [paymentsPath] };

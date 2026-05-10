@@ -1,4 +1,6 @@
 major_code,major_name,department_id,weight
-CS,Computer Science,812345,40
-MATH,Mathematics,834567,35
-PHYS,Physics,856789,25
+CS,Computer Science,812345,30
+MATH,Mathematics,834567,22
+PHYS,Physics,856789,18
+ENGL,English,845678,18
+SOC,Sociology,867890,12

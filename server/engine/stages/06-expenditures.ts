@@ -44,7 +44,7 @@ function runNonSalaryExpenditures(ctx: SimContext): string[] {
   for (const [deptId, employeeCount] of Object.entries(countByDept)) {
     for (let i = 0; i < employeeCount; i++) {
       if (Math.random() >= 1 / 15) continue;
-      const payment_reference = ctx.transactions.create(ctx.termDate, -computerUnitCost, 20000, 'ITEQ');
+      const payment_reference = ctx.transactions.create(ctx.termDate, -computerUnitCost, 10000, 'ITEQ');
       rows.push({ department_id: deptId, term: ctx.termCode, expense_type: 'ITEQ', unit_cost: computerUnitCost, payment_reference });
     }
   }

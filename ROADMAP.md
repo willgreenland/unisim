@@ -53,6 +53,38 @@ New students enter with zero passed courses and only level-1 unlocked, so their 
 
 ---
 
+## Phase 7 — Employee term activities
+*Depends on Phase 5 (employee roster); splits the existing grading stage into two sub-stages*
+
+Stage 7 covers what faculty do during a term beyond teaching. It is split into two sub-stages that run in order before reporting.
+
+### 7a — Research output *(new)*
+
+Each term, each active faculty member is independently sampled for research publications using rank-based probabilities:
+
+- **RPRO**: highest base rate — their capped teaching load (1 course/term) represents dedicated research time.
+- **CPRO**: low base rate — their reduced teaching load is reserved for other activities to be modelled in future phases.
+- **PROF/ASSO**: medium rate.
+- **ASST**: lower rate (building a research programme).
+- **LECT/INST**: minimal rate (teaching-focused appointments).
+
+Two publication types are sampled independently per faculty member per term: **ARTICLE** (journal article, higher probability) and **BOOK** (lower probability). A faculty member can produce at most one of each type per term.
+
+**Procedural generation:**
+
+- *Titles* are constructed by sampling from a fixed word list to produce plausible-sounding academic title strings.
+- *Journals* are drawn from a fixed list of two journals per department/field. Articles are attributed to a journal from the author's department.
+- *Publishers* are drawn from a fixed list of academic book publishers. Books are attributed to one publisher regardless of department.
+- *Publication ID* is a unique fake reference number in IBAN-style format (e.g. `PUB-XXXX-XXXX-XXXX-XXXX`), generated fresh for each publication.
+
+Writes `{termTag}_research_output.csv` with columns: `publication_id`, `employee_id`, `department_id`, `publication_type` (ARTICLE | BOOK), `term`, `title`, `venue` (journal name or publisher name).
+
+### 7b — Grading *(relabeled; previously the sole stage 7)*
+
+Unchanged from its prior implementation. Each enrolled student-course pair receives a grade, score, and grade points. Writes `{termTag}_grades.csv`.
+
+---
+
 ## Phase 6 — Non-faculty expenditures
 *Depends on Phases 1 and 5*
 
@@ -61,3 +93,13 @@ The university incurs costs beyond faculty salaries — facilities, administrati
 - A non-faculty expenditure amount is calculated each term and written to `{termTag}_nonfaculty_expenditures.csv` with at minimum a total and a per-department breakdown.
 - Expenditures are recorded as outflow transactions (negative amounts) with an appropriate expense type code.
 - The budget stage (stage 1) should incorporate non-faculty expenditure projections alongside faculty salary totals so that the tuition rate calculation targets full cost coverage, not just salary cost times a fixed multiplier.
+
+---
+
+## Future improvements
+
+Enhancements deferred until core phases are stable.
+
+- **Richer research title generation** — the current generator uses a naive vowel-letter check for "a/an" article selection, producing incorrect forms like "An Unified". Replace with a phonetic lookup or exception list for words with a consonant onset despite a leading vowel letter. Additional title patterns and a larger, more field-differentiated word list would also improve realism.
+
+- **Gift revenue** — model one-off and recurring donations from alumni and external benefactors as an additional income stream. Gifts should be recorded as inflow transactions with a distinct expense type code and reflected in the budget stage so that the tuition rate accounts for expected gift income.
